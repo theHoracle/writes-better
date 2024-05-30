@@ -2,9 +2,12 @@
 
 import { Button } from "@/components/ui/button";
 import { ImagePlus, Import, PlusCircle, PlusIcon } from "lucide-react"
+import dynamic from "next/dynamic";
 import { useState } from "react"
-import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
+
+const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });
+
 
 const WritePage = () => {
     const [isOpen, setIsOpen] = useState(false)
