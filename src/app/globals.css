@@ -64,3 +64,11 @@
     height: calc(100vh - 64px);
       
   }
+
+  .ql-container {
+    font-size: 20px !important;
+  }
+
+  .quill > .ql-container > .ql-editor.ql-blank::before {
+    color: hsl(var(--muted-foreground));
+  }

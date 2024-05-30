@@ -6,8 +6,8 @@ import { cn } from "@/lib/utils";
 const Card = () => {
     
     return (
-        <div className="grid grid-cols-2 mb-12 gap-x-8">
-            <div className="relative h-60 overflow-hidden rounded-md">
+        <div className="grid lg:grid-cols-2 mb-12 gap-x-8">
+            <div className="relative h-60 overflow-hidden rounded-md hidden lg:block">
                 <Image
                 fill
                 src={`/kids_about_to_ball.jpeg`}
@@ -20,7 +20,7 @@ const Card = () => {
                 <span className="uppercase text-red-500 font-medium">Culture</span>
                </div>
                <h2 className="text-lg font-bold leading-5">Lorem ipsum, dolor sit amet consectetur adipisicing elit.</h2>
-               <p className="">
+               <p className="text-muted-foreground">
                 Lorem ipsum dolor sit amet consectetur adipisicing elit. Tempore sunt expedita deserunt itaque?
                 Quo neque soluta, sapiente inventore repellat reprehenderit nam, aliquam commodi optio,
                 non doloribus facilis libero obcaecati quod?

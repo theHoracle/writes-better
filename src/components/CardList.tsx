@@ -1,4 +1,4 @@
-import Image from "next/image"
+
 import Pagination from "./Pagination"
 import Card from "./Card"
 
