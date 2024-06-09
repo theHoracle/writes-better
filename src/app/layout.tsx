@@ -21,21 +21,21 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-      <ThemeProvider
-            attribute="class"
-            defaultTheme="system"
-            enableSystem
-            disableTransitionOnChange
-          >
-        <div className="">
-          <MaxWidthWrapper>
-            <Navbar />
-        {children}
-        <Footer />
-          </MaxWidthWrapper>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <div className="">
+            <MaxWidthWrapper>
+              <Navbar />
+              {children}
+              <Footer />
+            </MaxWidthWrapper>
           </div>
-          </ThemeProvider>
-        </body>
+        </ThemeProvider>
+      </body>
     </html>
   );
 }
