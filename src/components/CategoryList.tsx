@@ -2,36 +2,38 @@ import { link } from "fs"
 import Image from "next/image"
 import Link from "next/link"
 
+export const categories = [{
+    title: "style",
+    image: "/category/style.jpeg",
+    bgColor: "bg-red-200" ,   
+}, 
+{
+    title: "travel",
+    image: "/category/travel.jpeg",
+    bgColor: "bg-blue-200" ,
+}, 
+ {
+    title: "language",
+    image: "/category/language.jpeg",
+    bgColor: "bg-yellow-200" ,
+},
+ {
+    title: "culture",
+    image: "/category/culture.jpeg",
+    bgColor: "bg-pink-200" ,
+},
+{
+    title: "coding",
+    image: "/category/coding.jpeg",
+    bgColor: "bg-gray-200" ,
+}, {
+    title: "food",
+    image: "/category/food.jpeg",
+    bgColor: "bg-green-200" ,
+}]
+
 const CategoryList = () => {
-    const categories = [{
-            title: "style",
-            image: "/category/style.jpeg",
-            bgColor: "bg-red-200" ,   
-        }, 
-        {
-            title: "travel",
-            image: "/category/travel.jpeg",
-            bgColor: "bg-blue-200" ,
-        }, 
-         {
-            title: "language",
-            image: "/category/language.jpeg",
-            bgColor: "bg-yellow-200" ,
-        },
-         {
-            title: "culture",
-            image: "/category/culture.jpeg",
-            bgColor: "bg-pink-200" ,
-        },
-        {
-            title: "coding",
-            image: "/category/coding.jpeg",
-            bgColor: "bg-gray-200" ,
-        }, {
-            title: "food",
-            image: "/category/food.jpeg",
-            bgColor: "bg-green-200" ,
-        }]
+   
     
     return (
         <div className="capitalize">

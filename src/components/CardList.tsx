@@ -1,5 +1,5 @@
 import Image from "next/image"
-import Pagination from "./Pagination"
+import {PaginationBar} from "./Pagination"
 import Card from "./Card"
 
 const CardList = () => {
@@ -12,7 +12,7 @@ const CardList = () => {
                 <Card />
                 <Card />
             </div>
-            <Pagination />
+            <PaginationBar />
         </div>
     )
 }
