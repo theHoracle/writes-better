@@ -13,6 +13,7 @@ AUTH_GOOGLE_SECRET=
 ```
 
 Then start the development server
+
 ```bash
 npm run dev
 # or

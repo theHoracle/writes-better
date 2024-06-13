@@ -2,11 +2,17 @@ import Image from "next/image";
 import { Button, buttonVariants } from "./ui/button";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
+import { Post } from "@prisma/client";
 
-const Card = () => {
+
+interface CardProps {
+  post: Post
+}
+
+const Card = ({post}:CardProps) => {
   return (
-    <div className="grid grid-cols-2 mb-12 gap-x-8">
-      <div className="relative h-60 overflow-hidden rounded-md">
+    <div className="md:grid md:grid-cols-2 mb-12 gap-x-8">
+      <div className="relative hidden md:block h-60 overflow-hidden rounded-md">
         <Image
           fill
           src={`/kids_about_to_ball.jpeg`}

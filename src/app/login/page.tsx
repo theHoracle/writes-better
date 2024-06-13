@@ -1,11 +1,11 @@
-import Image from "next/image"
-import Link from "next/link"
+import Image from "next/image";
+import Link from "next/link";
 
-import { Button, buttonVariants } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { signIn } from "@/lib/nextAuth/auth"
-import { cn } from "@/lib/utils"
+import { Button, buttonVariants } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { signIn } from "@/lib/nextAuth/auth";
+import { cn } from "@/lib/utils";
 
 const Login = () => {
   return (
@@ -13,7 +13,9 @@ const Login = () => {
       <div className="flex items-center justify-center py-12">
         <div className="mx-auto grid w-[350px] gap-6">
           <div className="grid gap-2 text-center">
-            <h1 className="text-4xl font-bold tracking-tighter leading-tight">Login</h1>
+            <h1 className="text-4xl font-bold tracking-tighter leading-tight">
+              Login
+            </h1>
             <p className="text-balance text-muted-foreground">
               Select an auth provider below to login to your account
             </p>
@@ -32,38 +34,50 @@ const Login = () => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Login
+export default Login;
 
 const LoginWithGoogle = () => {
-    return <form
+  return (
+    <form
       action={async () => {
-        "use server"
-        await signIn("google")
+        "use server";
+        await signIn("google");
       }}
     >
-      <button type="submit" className={cn(buttonVariants(), 'w-full py-6')}>Sign in with Google</button>
+      <button type="submit" className={cn(buttonVariants(), "w-full py-6")}>
+        Sign in with Google
+      </button>
     </form>
-}
+  );
+};
 const LoginWithFacebook = () => {
-    return <form
+  return (
+    <form
       action={async () => {
-        "use server"
-        await signIn("google")
+        "use server";
+        await signIn("google");
       }}
     >
-      <button type="submit" className={cn(buttonVariants(), 'w-full py-6')}>Sign in with Facebook</button>
+      <button type="submit" className={cn(buttonVariants(), "w-full py-6")}>
+        Sign in with Facebook
+      </button>
     </form>
-}
+  );
+};
 const LoginWithGithub = () => {
-    return <form
+  return (
+    <form
       action={async () => {
-        "use server"
-        await signIn("google")
+        "use server";
+        await signIn("google");
       }}
     >
-      <button type="submit" className={cn(buttonVariants(), 'w-full py-6')}>Sign in with Github</button>
+      <button type="submit" className={cn(buttonVariants(), "w-full py-6")}>
+        Sign in with Github
+      </button>
     </form>
-}
+  );
+};

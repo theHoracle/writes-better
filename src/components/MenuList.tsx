@@ -1,32 +1,36 @@
 import Link from "next/link";
-import { categories } from "./CategoryList";
+
 import Image from "next/image";
+import { categoriesColor, getCategories } from "./CategoryList";
+import { Category } from "@prisma/client";
 
 interface MenuListProps {
   topic: string;
   title: string;
   hideImage?: boolean | undefined;
 }
-const MenuList = ({ title, topic, hideImage }: MenuListProps) => {
+const MenuList = async ({ title, topic, hideImage }: MenuListProps) => {
+  const data = await getCategories()
+  const categories: Category[] | undefined = data.categories
   return (
     <div>
       <div className="my-8">
         <p className="text-xs text-muted-foreground leading-4">{topic}</p>
         <h2 className="font-semibold my-1 text-xl leading-4">{title}</h2>
       </div>
-      <div className="flex flex-col gap-2.5">
-        {categories.map((category) => {
+      {categories && <div className="flex flex-col gap-2.5">
+        {categories?.map((category, index) => {
           return (
             <MenuListItem
-              key={category}
-              bgColor={category.bgColor}
+              key={category.id}
+              bgColor={categoriesColor[index]}
               category={category.title}
-              imageUrl={category.image}
+              imageUrl={category.img}
               hideImage={hideImage}
             />
           );
         })}
-      </div>
+      </div>}
     </div>
   );
 };
