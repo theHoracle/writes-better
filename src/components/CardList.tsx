@@ -9,10 +9,10 @@ interface CardListProps {
 }
 
 const getPosts = async (page: number, cat: string) => {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/posts?page=${page}&cat=${cat || ""}`, {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/posts?page=${page}&cat=${cat}`, {
     cache: "no-cache"
   } )
-  if(!res) throw new Error("")
+  if(!res) {throw new Error("Failed")}
   return res.json()
 }
 

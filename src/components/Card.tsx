@@ -36,7 +36,7 @@ const Card = ({post}:CardProps) => {
           facilis libero obcaecati quod?
         </p>
         <Link
-          href={"#"}
+          href={`/post/${post.id}`}
           className={cn(
             buttonVariants({ variant: "link" }),
             "px-0 max-w-fit text-xs",

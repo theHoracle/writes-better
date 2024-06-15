@@ -55,7 +55,7 @@ export function PaginationBar({page, hasNext,hasPrev,totalPages}: PaginationBarP
 
   useEffect(() => {
     router.push(`/?page=${currentPage}#posts`)
-  }, [currentPage, router])
+  }, [currentPage])
 
   console.log("prev", hasPrev)
   console.log("Next", hasNext)

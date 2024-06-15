@@ -10,7 +10,7 @@ export const GET = async (req: NextRequest) => {
         take: POST_PER_PAGE,
         skip: POST_PER_PAGE * (parseInt(page) - 1 ),
         where: {
-            ...(cat && {catSlug: cat})
+            ...(cat && {catSlug: cat}),
         }
         }
     try {

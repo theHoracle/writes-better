@@ -1,8 +1,42 @@
 import { CommentBox } from "@/components/CommentHandler";
 import Menu from "@/components/Menu";
+import { Post } from "@prisma/client";
 import Image from "next/image";
+import { notFound } from "next/navigation";
+import sanitizeHtml from 'sanitize-html';
 
-const BlogPost = () => {
+
+interface BlogPostProps {
+  params: {
+    postId: string
+  }
+}
+
+const getPost = async (postId: string) => {
+  try {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/posts/${postId}`, {
+      cache: "no-store"
+    })
+    if(!res.ok) {
+      throw new Error("Response is not OK!")
+    }
+  return res.json()
+  } catch (error) {
+  console.log("Error form the page: ", error)  
+  
+}
+}
+
+const BlogPost = async ({params}: BlogPostProps) => {
+  const {postId } = params
+  const data: Post = await getPost(postId)
+  console.log(data)
+  if(!data) {
+    return notFound()
+  }
+
+  const sanitizedHtml = sanitizeHtml(data?.desc)
+
   return (
     <div className="my-5 md:my-10">
       <div className="">
@@ -21,8 +55,8 @@ const BlogPost = () => {
                 />
               </div>
               <div className="text-sm">
-                <p className="">theHoracle</p>
-                <span className="text-muted-foreground">10.06.24</span>
+                <p className="">{data.userEmail}</p>
+                <span className="text-muted-foreground">{""}</span>
               </div>
             </div>
           </div>
@@ -38,44 +72,7 @@ const BlogPost = () => {
         {/* content - */}
         <div className="mt-10 flex gap-12">
           <div className="flex-[4]">
-            <div>
-              <div className="flex flex-col gap-4">
-                <p>
-                  Lorem ipsum dolor, sit amet consectetur adipisicing elit. At
-                  harum, suscipit nesciunt, deleniti unde rem quam sequi ex
-                  ipsum recusandae odio aspernatur eligendi optio? Doloremque
-                  sequi dolorem quam eaque distinctio hic et, tempore possimus
-                  eveniet. Quae, repellendus quod consequatur quisquam harum ea
-                  quaerat, tempore atque ex sunt rerum eius quis.
-                </p>
-                <h4 className="font-semibold">Lorem ipsum dolor sit amet.</h4>
-                <p>
-                  Lorem ipsum dolor, sit amet consectetur adipisicing elit. At
-                  harum, suscipit nesciunt, deleniti unde rem quam sequi ex
-                  ipsum recusandae odio aspernatur eligendi optio? Doloremque
-                  sequi dolorem quam eaque distinctio hic et, tempore possimus
-                  eveniet. Quae, repellendus quod consequatur quisquam harum ea
-                  quaerat, tempore atque ex sunt rerum eius quis.
-                </p>
-                <p>
-                  Lorem ipsum dolor, sit amet consectetur adipisicing elit. At
-                  harum, suscipit nesciunt, deleniti unde rem quam sequi ex
-                  ipsum recusandae odio aspernatur eligendi optio? Doloremque
-                  sequi dolorem quam eaque distinctio hic et, tempore possimus
-                  eveniet. Quae, repellendus quod consequatur quisquam harum ea
-                  quaerat, tempore atque ex sunt rerum eius quis.
-                </p>
-                <h4 className="font-semibold">Lorem ipsum dolor sit amet.</h4>
-                <p>
-                  Lorem ipsum dolor, sit amet consectetur adipisicing elit. At
-                  harum, suscipit nesciunt, deleniti unde rem quam sequi ex
-                  ipsum recusandae odio aspernatur eligendi optio? Doloremque
-                  sequi dolorem quam eaque distinctio hic et, tempore possimus
-                  eveniet. Quae, repellendus quod consequatur quisquam harum ea
-                  quaerat, tempore atque ex sunt rerum eius quis.
-                </p>
-              </div>
-            </div>
+            <div  dangerouslySetInnerHTML={{__html: sanitizedHtml}} />
             <div className="">
               <h2 className="font-semibold my-10 text-xl">Comments</h2>
               <CommentBox />
