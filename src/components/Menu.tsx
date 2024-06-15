@@ -17,7 +17,7 @@ const Menu = async() => {
             <Link
               href={`/blog/cat=${category.title}`}
               key={index}
-              className={`flex items-center justify-center gap-1.5 md:gap-3 rounded-md h-6 text-sm dark:text-gray-500 ${categoriesColor[index]}`}
+              className={`flex items-center justify-center gap-1.5 md:gap-3 lowercase rounded-md h-6 text-sm dark:text-gray-500 ${categoriesColor[index]}`}
             >
               {category.title}
             </Link>

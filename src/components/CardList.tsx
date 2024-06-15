@@ -5,18 +5,19 @@ import { Post } from "@prisma/client";
 
 interface CardListProps {
   page: number
+  cat: string
 }
 
-const getPosts = async (page: number) => {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/posts?page=${page}`, {
+const getPosts = async (page: number, cat: string) => {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/posts?page=${page}&cat=${cat || ""}`, {
     cache: "no-cache"
   } )
   if(!res) throw new Error("")
   return res.json()
 }
 
-const CardList = async ({page}: CardListProps) => {
-  const {data, count} = await getPosts(page)
+const CardList = async ({page, cat}: CardListProps) => {
+  const {data, count} = await getPosts(page, cat)
   console.log("THe data :", data)
   const posts: Post[] = data
 
@@ -30,7 +31,7 @@ const CardList = async ({page}: CardListProps) => {
       <h2 className="font-semibold my-10 text-xl">Recent Post</h2>
       <div className="flex flex-col">
         {
-          posts.map((post, index) => {
+          posts?.map((post, index) => {
             return <Card key={post.id} post={post} />
           })
         }

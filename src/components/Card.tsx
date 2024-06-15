@@ -10,6 +10,7 @@ interface CardProps {
 }
 
 const Card = ({post}:CardProps) => {
+  console.log("Images: ", post.img)
   return (
     <div className="md:grid md:grid-cols-2 mb-12 gap-x-8">
       <div className="relative hidden md:block h-60 overflow-hidden rounded-md">
@@ -22,8 +23,8 @@ const Card = ({post}:CardProps) => {
       </div>
       <div className="text-xs flex flex-col gap-2 justify-center">
         <div>
-          <span className="text-gray-400">28.05.2024 - </span>
-          <span className="uppercase text-red-500 font-medium">Culture</span>
+          <span className="text-gray-400">{post.createdAt.toString().substring(0,10)} - </span>
+          <span className="uppercase text-red-500 font-medium">{post.catSlug}</span>
         </div>
         <h2 className="text-lg font-bold leading-5">
           Lorem ipsum, dolor sit amet consectetur adipisicing elit.

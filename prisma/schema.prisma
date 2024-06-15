@@ -88,7 +88,7 @@ model Authenticator {
 }
 
 model Category {
-  id    String @id @map("_id")
+  id    String @id @default(auto()) @map("_id") @db.ObjectId
   slug  String @unique
   title String
   img   String
@@ -96,7 +96,7 @@ model Category {
 }
 
 model Post {
-  id        String    @id @map("_id")
+  id        String    @id @default(auto()) @map("_id") @db.ObjectId
   slug      String    @unique
   title     String
   desc      String
@@ -107,10 +107,11 @@ model Post {
   userEmail String
   user      User      @relation(fields: [userEmail], references: [email])
   comments  Comment[]
+  createdAt DateTime  @default(now())
 }
 
 model Comment {
-  id        String   @id @map("_id")
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
   desc      String
   catSlug   String
   userEmail String
