@@ -2,7 +2,7 @@ import TextEditor from "@/components/TextEditor";
 import { auth } from "@/lib/nextAuth/auth";
 
 const NewPost = async () => {
-  const session  = await auth()
+  const session = await auth();
 
   return (
     <div>

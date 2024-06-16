@@ -3,10 +3,9 @@ import Link from "next/link";
 import { getCategories } from "./CategoryList";
 import { Category } from "@prisma/client";
 
-
 const Footer = async () => {
-  const data = await getCategories()
-  const categories: Category[] | undefined = data.categories
+  const data = await getCategories();
+  const categories: Category[] | undefined = data.categories;
   return (
     <footer className="flex flex-col md:flex-row gap-8 pt-10">
       <div className="flex-1">
@@ -57,17 +56,19 @@ const Footer = async () => {
         </div>
         <div className="flex flex-col">
           <h6>Categories</h6>
-          {categories && <ul>
-            {categories?.map((category, index) => {
-              return (
-                <li key={index}>
-                  <Link href={`/${category.title}`} className="capitalize ">
-                    {category.title}
-                  </Link>
-                </li>
-              );
-            })}
-          </ul>}
+          {categories && (
+            <ul>
+              {categories?.map((category, index) => {
+                return (
+                  <li key={index}>
+                    <Link href={`/${category.title}`} className="capitalize ">
+                      {category.title}
+                    </Link>
+                  </li>
+                );
+              })}
+            </ul>
+          )}
         </div>
         <div className="flex flex-col">
           <h6>Socials</h6>

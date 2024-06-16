@@ -1,41 +1,42 @@
 import { CommentBox } from "@/components/CommentHandler";
 import Menu from "@/components/Menu";
 import { Post } from "@prisma/client";
+import { User } from "next-auth";
 import Image from "next/image";
 import { notFound } from "next/navigation";
-import sanitizeHtml from 'sanitize-html';
-
+import sanitizeHtml from "sanitize-html";
 
 interface BlogPostProps {
   params: {
-    postId: string
-  }
+    postId: string;
+  };
 }
 
 const getPost = async (postId: string) => {
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/posts/${postId}`, {
-      cache: "no-store"
-    })
-    if(!res.ok) {
-      throw new Error("Response is not OK!")
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_SERVER_URL}/api/posts/${postId}`);
+    if (!res.ok) {
+      throw new Error("Response is not OK!");
     }
-  return res.json()
+    return res.json();
   } catch (error) {
-  console.log("Error form the page: ", error)  
-  
-}
-}
-
-const BlogPost = async ({params}: BlogPostProps) => {
-  const {postId } = params
-  const data: Post = await getPost(postId)
-  console.log(data)
-  if(!data) {
-    return notFound()
+    console.log("Error form the page: ", error);
   }
+};
 
-  const sanitizedHtml = sanitizeHtml(data?.desc)
+const BlogPost = async ({ params }: BlogPostProps) => {
+  const { postId } = params;
+  const data = await getPost(postId);
+  const post: Post & { user: User } = data.post;
+
+  if (!post) {
+    return notFound();
+  }
+  console.log(post)
+
+  const sanitizedHtml = sanitizeHtml(post.desc);
+  console.log("Sanitized html: ", sanitizedHtml)
 
   return (
     <div className="my-5 md:my-10">
@@ -49,14 +50,16 @@ const BlogPost = async ({params}: BlogPostProps) => {
               <div className="relative  aspect-square h-12 overflow-hidden rounded-full ">
                 <Image
                   fill
-                  src="/TheHoracle.jpg"
+                  src={post.user.image || ""}
                   alt="theHoracle"
                   className="object-contain object-center size-full scale-110"
                 />
               </div>
               <div className="text-sm">
-                <p className="">{data.userEmail}</p>
-                <span className="text-muted-foreground">{""}</span>
+                <p className="">{post.user.name}</p>
+                <span className="text-muted-foreground">
+                  {post.createdAt.toString().substring(0, 10)}
+                </span>
               </div>
             </div>
           </div>
@@ -72,58 +75,12 @@ const BlogPost = async ({params}: BlogPostProps) => {
         {/* content - */}
         <div className="mt-10 flex gap-12">
           <div className="flex-[4]">
-            <div  dangerouslySetInnerHTML={{__html: sanitizedHtml}} />
+          <div className="my-8">
+            <div dangerouslySetInnerHTML={{ __html: sanitizedHtml }} />
+          </div>
             <div className="">
               <h2 className="font-semibold my-10 text-xl">Comments</h2>
-              <CommentBox />
-              <div className="my-10">
-                {/* Users comments */}
-                <ul className="divide-y border-muted-foreground flex flex-col gap-4">
-                  <li className="flex flex-col gap-2">
-                    <div className="flex gap-4 items-center">
-                      <Image
-                        src="/TheHoracle.jpg"
-                        alt="Not the Horacle"
-                        width={50}
-                        height={50}
-                        className="rounded-full "
-                      />
-                      <div className="flex flex-col">
-                        <p className="font-semibold">Not theHoracle</p>
-                        <span className="text-xs">10.06.24</span>
-                      </div>
-                    </div>
-                    <p className="">
-                      Lorem ipsum dolor sit, amet consectetur adipisicing elit.
-                      Velit quod accusantium esse, harum reiciendis voluptas
-                      quia nulla! Esse optio quos quae quam eum saepe dolores,
-                      accusamus perspiciatis porro laudantium eveniet!
-                    </p>
-                  </li>
-
-                  <li className="flex flex-col gap-2 pt-4">
-                    <div className="flex gap-4 items-center">
-                      <Image
-                        src="/TheHoracle.jpg"
-                        alt="Not the Horacle"
-                        width={50}
-                        height={50}
-                        className="rounded-full "
-                      />
-                      <div className="flex flex-col">
-                        <p className="font-semibold">Not theHoracle</p>
-                        <span className="text-xs">10.06.24</span>
-                      </div>
-                    </div>
-                    <p className="">
-                      Lorem ipsum dolor sit, amet consectetur adipisicing elit.
-                      Velit quod accusantium esse, harum reiciendis voluptas
-                      quia nulla! Esse optio quos quae quam eum saepe dolores,
-                      accusamus perspiciatis porro laudantium eveniet!
-                    </p>
-                  </li>
-                </ul>
-              </div>
+              <CommentBox postSlug={post.slug} />
             </div>
           </div>
           <Menu />

@@ -10,27 +10,29 @@ interface MenuListProps {
   hideImage?: boolean | undefined;
 }
 const MenuList = async ({ title, topic, hideImage }: MenuListProps) => {
-  const data = await getCategories()
-  const categories: Category[] | undefined = data.categories
+  const data = await getCategories();
+  const categories: Category[] | undefined = data.categories;
   return (
     <div>
       <div className="my-8">
         <p className="text-xs text-muted-foreground leading-4">{topic}</p>
         <h2 className="font-semibold my-1 text-xl leading-4">{title}</h2>
       </div>
-      {categories && <div className="flex flex-col gap-2.5">
-        {categories?.map((category, index) => {
-          return (
-            <MenuListItem
-              key={category.id}
-              bgColor={categoriesColor[index]}
-              category={category.title}
-              imageUrl={category.img}
-              hideImage={hideImage}
-            />
-          );
-        })}
-      </div>}
+      {categories && (
+        <div className="flex flex-col gap-2.5">
+          {categories?.map((category, index) => {
+            return (
+              <MenuListItem
+                key={category.id}
+                bgColor={categoriesColor[index]}
+                category={category.title}
+                imageUrl={category.img}
+                hideImage={hideImage}
+              />
+            );
+          })}
+        </div>
+      )}
     </div>
   );
 };

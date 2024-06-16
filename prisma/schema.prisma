@@ -113,7 +113,6 @@ model Post {
 model Comment {
   id        String   @id @default(auto()) @map("_id") @db.ObjectId
   desc      String
-  catSlug   String
   userEmail String
   user      User     @relation(fields: [userEmail], references: [email])
   postSlug  String

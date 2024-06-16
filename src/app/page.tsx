@@ -6,18 +6,18 @@ import Image from "next/image";
 
 interface HomeProps {
   searchParams: {
-    page: string
-    cat: string
-  }
+    page: string;
+    cat: string;
+  };
 }
 
-export default function Home({searchParams}: HomeProps) {
-  const page = parseInt(searchParams.page) || 1
-  const cat = searchParams.cat || ""
+export default function Home({ searchParams }: HomeProps) {
+  const page = parseInt(searchParams.page) || 1;
+  const cat = searchParams.cat || "";
   return (
     <main className="">
       <Featured />
-      <CategoryList  />
+      <CategoryList />
       <div className="flex gap-12">
         <CardList page={page} cat={cat} />
         <Menu />
