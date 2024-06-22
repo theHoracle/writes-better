@@ -1,48 +1,35 @@
 "use client";
 
 import {
-  HamburgerMenuIcon,
-  Cross1Icon,
-  Cross2Icon,
+  DiscIcon,
+
 } from "@radix-ui/react-icons";
+import { Button } from "@/components/ui/button"
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuPortal,
+  DropdownMenuSeparator,
+  DropdownMenuShortcut,
+  DropdownMenuSub,
+  DropdownMenuSubContent,
+  DropdownMenuSubTrigger,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
 import { useEffect, useRef, useState } from "react";
-import Link from "next/link";
-import { Button, buttonVariants } from "./ui/button";
 import { User } from "next-auth";
 import { signOut } from "next-auth/react";
-import { cn } from "@/lib/utils";
-import { usePathname } from "next/navigation";
-import { useOnClickOutside } from "@/hooks/useOnClickOutside";
+import Link from "next/link";
+
 
 interface MobileNavProps {
   user: User | undefined;
 }
 
 const MobileNav = ({ user }: MobileNavProps) => {
-  const [isOpen, setIsOpen] = useState(false);
-
-  const pathname = usePathname();
-  const mobileNavRef = useRef<HTMLDivElement | null>(null);
-
-  // remove main scroll when nav is open
-  useEffect(() => {
-    if (isOpen) {
-      document.body.classList.add("overflow-hidden");
-    }
-    document.body.classList.remove("overflow-hidden");
-  });
-
-  // close navmenu on pathname change
-  useEffect(() => {
-    setIsOpen(false);
-  }, [pathname]);
-  // if we navigate to same page, still close navmenu
-  const closeOnCurrent = (href: string) => {
-    if (pathname === href) {
-      setIsOpen(false);
-    }
-  };
-  useOnClickOutside(mobileNavRef, () => setIsOpen(false));
 
   const navItems = [
     {
@@ -63,63 +50,74 @@ const MobileNav = ({ user }: MobileNavProps) => {
     },
   ];
   return (
-    <div className="md:hidden">
-      {!isOpen ? (
-        <HamburgerMenuIcon
-          className="h-5 w-5"
-          onClick={() => setIsOpen(!isOpen)}
-        />
-      ) : (
-        <Cross2Icon className="h-5 w-5" onClick={() => setIsOpen(!isOpen)} />
-      )}
-      {isOpen && (
-        <div
-          ref={mobileNavRef}
-          className="fixed top-20 right-0 bg-background z-50 mobile-nav-height w-1/2 min-w-64 py-5 px-4 flex flex-col border-l border-gray-300"
-        >
-          <div>
-            <ul className="flex flex-col divide-y border-gray-300 gap-2 peer-[1]:pt-1">
-              {navItems.map((nav, index) => {
-                return (
-                  <li key={index} className="pt-2">
-                    <Link href={nav.link}>{nav.title}</Link>
-                  </li>
-                );
-              })}
-            </ul>
-            <div className="pt-4">
-              {user ? (
-                <div className="flex flex-col gap-4">
-                  <Link
-                    href="/write"
-                    className={cn(buttonVariants({ variant: "outline" }))}
-                  >
-                    Write
-                  </Link>
-                  <Button
-                    variant="destructive"
-                    onClick={() => signOut()}
-                    className="w-full"
-                  >
-                    Sign out
-                  </Button>
-                </div>
-              ) : (
-                <div>
-                  <Link
-                    href="/login"
-                    className={cn(buttonVariants(), "w-full")}
-                  >
-                    Sign in
-                  </Link>
-                </div>
-              )}
-            </div>
-          </div>
-          <div></div>
+    <DropdownMenu>
+    <DropdownMenuTrigger asChild>
+        <div>
+        <svg width="25" height="25" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0.900024 7.50002C0.900024 3.85495 3.85495 0.900024 7.50002 0.900024C11.1451 0.900024 14.1 3.85495 14.1 7.50002C14.1 11.1451 11.1451 14.1 7.50002 14.1C3.85495 14.1 0.900024 11.1451 0.900024 7.50002ZM7.50002 1.80002C4.35201 1.80002 1.80002 4.35201 1.80002 7.50002C1.80002 10.648 4.35201 13.2 7.50002 13.2C10.648 13.2 13.2 10.648 13.2 7.50002C13.2 4.35201 10.648 1.80002 7.50002 1.80002ZM3.07504 7.50002C3.07504 5.05617 5.05618 3.07502 7.50004 3.07502C9.94388 3.07502 11.925 5.05617 11.925 7.50002C11.925 9.94386 9.94388 11.925 7.50004 11.925C5.05618 11.925 3.07504 9.94386 3.07504 7.50002ZM7.50004 3.92502C5.52562 3.92502 3.92504 5.52561 3.92504 7.50002C3.92504 9.47442 5.52563 11.075 7.50004 11.075C9.47444 11.075 11.075 9.47442 11.075 7.50002C11.075 5.52561 9.47444 3.92502 7.50004 3.92502ZM7.50004 5.25002C6.2574 5.25002 5.25004 6.25739 5.25004 7.50002C5.25004 8.74266 6.2574 9.75002 7.50004 9.75002C8.74267 9.75002 9.75004 8.74266 9.75004 7.50002C9.75004 6.25738 8.74267 5.25002 7.50004 5.25002ZM6.05004 7.50002C6.05004 6.69921 6.69923 6.05002 7.50004 6.05002C8.30084 6.05002 8.95004 6.69921 8.95004 7.50002C8.95004 8.30083 8.30084 8.95002 7.50004 8.95002C6.69923 8.95002 6.05004 8.30083 6.05004 7.50002Z" fill="currentColor" fill-rule="evenodd" clip-rule="evenodd"></path></svg>
         </div>
-      )}
-    </div>
+    </DropdownMenuTrigger>
+    <DropdownMenuContent className="w-56">
+      <DropdownMenuLabel>
+        {
+          user ?
+          (<div className="flex">
+            <p>{user.name || user.email}</p>
+          </div>) : 
+          <Link href='/login'
+          className=""
+          >Sign in</Link>
+        }
+        
+        </DropdownMenuLabel>
+      <DropdownMenuSeparator />
+      <DropdownMenuGroup>
+        <DropdownMenuItem>
+          Profile
+          <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
+        </DropdownMenuItem>
+        <DropdownMenuItem>
+          Billing
+          <DropdownMenuShortcut>⌘B</DropdownMenuShortcut>
+        </DropdownMenuItem>
+        <DropdownMenuItem>
+          Settings
+          <DropdownMenuShortcut>⌘S</DropdownMenuShortcut>
+        </DropdownMenuItem>
+        <DropdownMenuItem>
+          Keyboard shortcuts
+          <DropdownMenuShortcut>⌘K</DropdownMenuShortcut>
+        </DropdownMenuItem>
+      </DropdownMenuGroup>
+      <DropdownMenuSeparator />
+      <DropdownMenuGroup>
+        <DropdownMenuItem>Team</DropdownMenuItem>
+        <DropdownMenuSub>
+          <DropdownMenuSubTrigger>Invite users</DropdownMenuSubTrigger>
+          <DropdownMenuPortal>
+            <DropdownMenuSubContent>
+              <DropdownMenuItem>Email</DropdownMenuItem>
+              <DropdownMenuItem>Message</DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem>More...</DropdownMenuItem>
+            </DropdownMenuSubContent>
+          </DropdownMenuPortal>
+        </DropdownMenuSub>
+        <DropdownMenuItem>
+          New Team
+          <DropdownMenuShortcut>⌘+T</DropdownMenuShortcut>
+        </DropdownMenuItem>
+      </DropdownMenuGroup>
+      <DropdownMenuSeparator />
+      <DropdownMenuItem>GitHub</DropdownMenuItem>
+      <DropdownMenuItem>Support</DropdownMenuItem>
+      <DropdownMenuItem disabled>API</DropdownMenuItem>
+      <DropdownMenuSeparator />
+      <DropdownMenuItem>
+        Log out
+        <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
+      </DropdownMenuItem>
+    </DropdownMenuContent>
+  </DropdownMenu>
   );
 };
 export default MobileNav;

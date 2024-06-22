@@ -9,7 +9,7 @@ import { buttonVariants } from "./ui/button";
 const Navbar = async () => {
   const session = await auth();
   return (
-    <nav className="flex z-40 items-center justify-between h-20 gap-3">
+    <nav className="flex z-40 items-center justify-between h-16 md:h-20 gap-3">
       <div className="lg:flex items-center space-x-2 flex-1 hidden ">
         <Link href="#">
           <Image

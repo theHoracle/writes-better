@@ -44,7 +44,9 @@ const NavbarAccountMenu = ({ user }: NavbarAccountMenuProps) => {
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
           <DropdownMenuItem>
-            <Link href="/new-post">Write</Link>
+            <Link href="/write"
+            className="size-full"
+            >Write</Link>
           </DropdownMenuItem>
           <DropdownMenuItem disabled>My Published Posts</DropdownMenuItem>
         </DropdownMenuGroup>

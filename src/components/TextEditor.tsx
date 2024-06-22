@@ -1,5 +1,4 @@
-"use client";
-import ReactQuill from "react-quill";
+"use client"
 import "react-quill/dist/quill.bubble.css"; // or 'quill.bubble.css' for the bubble theme
 import { Brackets, FileVideo, Image, PlusCircle } from "lucide-react";
 import { useRef, useState } from "react";
@@ -8,12 +7,17 @@ import { Button } from "./ui/button";
 import { cn } from "@/lib/utils";
 import { Session } from "next-auth";
 import { useRouter } from "next/navigation";
+import dynamic from "next/dynamic";
+import { AddPostInfo } from "./AddPostInfo";
 
 interface TextEditorProps {
   session: Session | null;
 }
 
 const TextEditor = ({ session }: TextEditorProps) => {
+  const ReactQuill = dynamic(() => import("react-quill"), {
+    ssr: false
+  });
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState("");
 
@@ -54,7 +58,9 @@ const TextEditor = ({ session }: TextEditorProps) => {
             className="w-full"
           />
         </div>
-        <Button className="absolute top-24 right-5">Publish</Button>
+        <div className="absolute top-24 right-5">
+          <AddPostInfo />
+        </div>
       </div>
     );
   return null;

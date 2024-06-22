@@ -1,9 +1,0 @@
-{
-  "arrowParens": "always",
-  "bracketSpacing": true,
-  "bracketSameLine": false,
-  "trailingComma": "all",
-  "vueIndentScriptAndStyle": true,
-  "endOfLine": "lf",
-  "printWidth": 80
-}
