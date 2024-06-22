@@ -58,10 +58,6 @@
   }
 }
 
-.mobile-nav-height {
-  height: calc(100vh - 80px);
-}
-
 .ql-container {
   font-size: 20px !important;
 }
