@@ -8,7 +8,7 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
 interface PaginationBarProps {
@@ -24,8 +24,13 @@ export function PaginationBar({
   hasPrev,
   totalPages,
 }: PaginationBarProps) {
-  const router = useRouter();
   const [currentPage, setCurrentPage] = useState<number>(page);
+  const [paginate, setPaginate] = useState(false);
+  
+  const router = useRouter();
+  const searchParams = useSearchParams()
+  const pathname = usePathname()
+
   const renderPages = () => {
     const pages = [];
     if (page > 1) {
@@ -42,29 +47,36 @@ export function PaginationBar({
 
   const handlePageChange = (pageNum: number) => {
     if (pageNum && pageNum <= totalPages) {
+      setPaginate(true);
       setCurrentPage(pageNum);
     }
   };
 
   const prevPage = () => {
     if (currentPage > 1) {
+      setPaginate(true);
       setCurrentPage(currentPage - 1);
     }
   };
 
   const nextPage = () => {
     if (currentPage < totalPages) {
+      setPaginate(true);
       setCurrentPage(currentPage + 1);
     }
   };
 
   useEffect(() => {
-    router.push(`/?page=${currentPage}#posts`);
-  }, [currentPage]);
-
-  console.log("prev", hasPrev);
-  console.log("Next", hasNext);
-  console.log("totalPages", totalPages);
+    if (paginate) {
+      const params = new URLSearchParams(searchParams)
+      params.set('page', currentPage.toString())
+      router.push(`?page=${currentPage}#posts`);
+      const newUrl = `${pathname}?${params.toString()}`
+      // 
+      router.push(`${newUrl}#posts`)
+      setPaginate(false);
+    }
+  }, [currentPage, router, paginate, pathname, searchParams]);
 
   return (
     <Pagination>

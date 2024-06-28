@@ -5,6 +5,7 @@ import MaxWidthWrapper from "@/components/MaxWidthWrapper";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { ThemeProvider } from "@/Providers/ThemeProvider";
+import { Toaster } from "@/components/ui/sonner";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -35,6 +36,7 @@ export default function RootLayout({
             </MaxWidthWrapper>
           </div>
         </ThemeProvider>
+        <Toaster />
       </body>
     </html>
   );

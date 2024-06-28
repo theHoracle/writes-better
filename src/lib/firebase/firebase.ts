@@ -1,6 +1,5 @@
-import { initializeApp } from 'firebase/app';
-import { getStorage } from 'firebase/storage'; // If you need Storage
-
+import { initializeApp } from "firebase/app";
+import { getStorage } from "firebase/storage"; // If you need Storage
 
 // Your Firebase configuration using environment variables
 const firebaseConfig = {
@@ -20,4 +19,4 @@ const app = initializeApp(firebaseConfig);
 const storage = getStorage(app, "gs://writessmart-test.appspot.com"); // If you need Storage
 
 // Export the initialized Firebase app and services
-export { app , storage };
+export { app, storage };

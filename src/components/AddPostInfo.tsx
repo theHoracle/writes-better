@@ -1,8 +1,8 @@
-import * as React from "react"
+import * as React from "react";
 
-import { cn } from "@/lib/utils"
-import { useMediaQuery } from "@/hooks/use-media-query"
-import { Button } from "@/components/ui/button"
+import { cn, slugify } from "@/lib/utils";
+import { useMediaQuery } from "@/hooks/use-media-query";
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -10,7 +10,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog"
+} from "@/components/ui/dialog";
 import {
   Drawer,
   DrawerClose,
@@ -20,46 +20,97 @@ import {
   DrawerHeader,
   DrawerTitle,
   DrawerTrigger,
-} from "@/components/ui/drawer"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
+} from "@/components/ui/drawer";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "./ui/textarea";
+import SelectCategory from "./SelectCategory";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
+import { Progress } from "./ui/progress";
 
-export function AddPostInfo() {
-  const [open, setOpen] = React.useState(false)
-  const isDesktop = useMediaQuery("(min-width: 768px)")
+interface AddPostInfoProps {
+  blogPost: string
+  title: string
+  img: string
+}
+export function AddPostInfo({blogPost,img, title}: AddPostInfoProps) {
+  const [open, setOpen] = React.useState(false);
+  const [postCategory, setPostCategory] = React.useState<String | undefined>()
+  const [postDesc, setPostDesc] = React.useState<String | undefined>('')
+  const router = useRouter()
+  
+  const isDesktop = useMediaQuery("(min-width: 768px)");
+  
+  const handleSubmit = async () => {
+    const postSlug = slugify(title)
+    const res = await fetch("/api/posts", {
+      method: "POST",
+      body: JSON.stringify({
+        slug: postSlug,
+        title: title,
+        desc: postDesc,
+        blogPost: blogPost,
+        img: img,
+        catSlug: postCategory, // using style as a default category
+      })
+    })
+    if(!res.ok) {
+      toast.error("An error occurred!")
+      return 
+    }
+
+    // show user success
+    toast.success("Post created successfully!", {
+      action: {
+        label: "Show",
+        onClick: () => router.push(`/post/${postSlug}`)
+      }
+    })
+  }
 
   if (isDesktop) {
     return (
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger asChild>
-          <Button variant="outline">Edit Profile</Button>
+          <Button variant="secondary"
+          >Publish</Button>
         </DialogTrigger>
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
-            <DialogTitle>Edit profile</DialogTitle>
+            <DialogTitle>Add post details</DialogTitle>
             <DialogDescription>
-              Make changes to your profile here. Click save when re done.
+              Select a category for your post and a short description.
             </DialogDescription>
           </DialogHeader>
-          <ProfileForm />
+          <PostInfo 
+          setPostCategory={setPostCategory}
+          postDesc={postDesc}
+          setPostDesc={setPostDesc}
+          post={handleSubmit}
+           />
         </DialogContent>
       </Dialog>
-    )
+    );
   }
 
   return (
     <Drawer open={open} onOpenChange={setOpen}>
       <DrawerTrigger asChild>
-        <Button variant="outline">Edit Profile</Button>
+        <Button variant="secondary">Publish</Button>
       </DrawerTrigger>
       <DrawerContent>
         <DrawerHeader className="text-left">
-          <DrawerTitle>Edit profile</DrawerTitle>
+          <DrawerTitle>Add post details</DrawerTitle>
           <DrawerDescription>
-            Make changes to your profile here. Click save when youre done.
+            Select a category for your post and a short description.
           </DrawerDescription>
         </DrawerHeader>
-        <ProfileForm className="px-4" />
+        <PostInfo 
+        setPostCategory={setPostCategory}
+        postDesc={postDesc}
+        setPostDesc={setPostDesc}
+        post={handleSubmit}
+        className="px-4" />
         <DrawerFooter className="pt-2">
           <DrawerClose asChild>
             <Button variant="outline">Cancel</Button>
@@ -67,21 +118,49 @@ export function AddPostInfo() {
         </DrawerFooter>
       </DrawerContent>
     </Drawer>
-  )
+  );
 }
 
-function ProfileForm({ className }: React.ComponentProps<"form">) {
-  return (
-    <form className={cn("grid items-start gap-4", className)}>
-      <div className="grid gap-2">
-        <Label htmlFor="email">Email</Label>
-        <Input type="email" id="email" defaultValue="shadcn@example.com" />
-      </div>
-      <div className="grid gap-2">
-        <Label htmlFor="username">Username</Label>
-        <Input id="username" defaultValue="@shadcn" />
-      </div>
-      <Button type="submit">Save changes</Button>
-    </form>
-  )
+interface PostInfoProps extends React.ComponentProps<"form"> {
+  setPostCategory: React.Dispatch<React.SetStateAction<String | undefined>>
+  setPostDesc: React.Dispatch<React.SetStateAction<String | undefined>>
+  postDesc: String | undefined
+  post: () => void
 }
+const PostInfo: React.FC<PostInfoProps> = ({ className, setPostCategory, postDesc, setPostDesc, post }) => {
+const [countText, setCountText] = React.useState<number>(postDesc!.length);
+
+  const handleText = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const newText = e.target.value;
+    if (newText.length <= 400) {
+      setPostDesc(newText);
+    }
+    setCountText(newText.length);
+  };
+
+  const valueProgress = (countText / 400) * 100;
+
+  return (
+    <form className={`grid items-start gap-4 ${className}`}>
+      <div>
+        <SelectCategory setCatSlug={setPostCategory} />
+      </div>
+      <div className="grid gap-2">
+        <Label htmlFor="post-description">Post description ({(400 - postDesc!.length)} characters left)</Label>
+        <div className="relative overflow-hidden flex flex-col items-center justify-center">
+          <Textarea
+            id="post-description"
+            defaultValue="This post is about..."
+            value={(postDesc) as string}
+            onChange={handleText}
+          />
+          <Progress
+            value={valueProgress}
+            className={`${valueProgress === 100 ? 'bg-red-500' : ''} h-0.5 absolute bottom-0`}
+          />
+        </div>
+      </div>
+      <Button onClick={post}>Save and Publish</Button>
+    </form>
+  );
+};

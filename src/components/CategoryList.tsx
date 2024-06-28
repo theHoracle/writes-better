@@ -12,7 +12,9 @@ export const categoriesColor = [
 ];
 
 export const getCategories = async () => {
-  const res = await fetch("http://localhost:3000/api/categories");
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_SERVER_URL}/api/categories`,
+  );
   if (!res) throw new Error("Fetch failed");
   return res.json();
 };
@@ -28,7 +30,7 @@ const CategoryList = async () => {
           {categories?.map((category, index) => {
             return (
               <Link
-                href={`/blog/cat=${category.title}`}
+                href={`/posts?cat=${category.slug}`}
                 key={category.id}
                 className={`flex items-center justify-center gap-1.5 md:gap-3 rounded-md h-20 text-sm dark:text-gray-500 ${categoriesColor[index]}`}
               >

@@ -8,14 +8,15 @@ import sanitizeHtml from "sanitize-html";
 
 interface BlogPostProps {
   params: {
-    postId: string;
+    postSlug: string;
   };
 }
 
 const getPost = async (postId: string) => {
   try {
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_SERVER_URL}/api/posts/${postId}`);
+      `${process.env.NEXT_PUBLIC_SERVER_URL}/api/posts/${postId}`,
+    );
     if (!res.ok) {
       throw new Error("Response is not OK!");
     }
@@ -26,17 +27,14 @@ const getPost = async (postId: string) => {
 };
 
 const BlogPost = async ({ params }: BlogPostProps) => {
-  const { postId } = params;
-  const data = await getPost(postId);
+  const { postSlug } = params;
+  const data = await getPost(postSlug);
   const post: Post & { user: User } = data.post;
 
   if (!post) {
     return notFound();
   }
-  console.log(post)
-
-  const sanitizedHtml = sanitizeHtml(post.desc);
-  console.log("Sanitized html: ", sanitizedHtml)
+  const sanitizedHtml = sanitizeHtml(post.blogPost);
 
   return (
     <div className="my-5 md:my-10">
@@ -44,7 +42,7 @@ const BlogPost = async ({ params }: BlogPostProps) => {
         <div className="grid md:grid-cols-2 gap-x-4">
           <div className="flex flex-col gap-8">
             <h1 className="text-4xl lg:text-5xl tracking-tighter leading-tight font-bold">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit.
+              {post.title}
             </h1>
             <div className="flex items-center gap-4">
               <div className="relative  aspect-square h-12 overflow-hidden rounded-full ">
@@ -63,21 +61,21 @@ const BlogPost = async ({ params }: BlogPostProps) => {
               </div>
             </div>
           </div>
-          <div className="relative overflow-hidden hidden md:block rounded-lg ">
+          {post.img && <div className="relative overflow-hidden hidden md:block rounded-lg ">
             <Image
               fill
-              src="/kids_about_to_ball.jpeg"
+              src={post.img}
               alt="kids about to ball image"
               className="object-cover object-center size-full "
             />
-          </div>
+          </div>}
         </div>
         {/* content - */}
         <div className="mt-10 flex gap-12">
           <div className="flex-[4]">
-          <div className="my-8">
-            <div dangerouslySetInnerHTML={{ __html: sanitizedHtml }} />
-          </div>
+            <div className="my-8">
+              <div dangerouslySetInnerHTML={{ __html: sanitizedHtml }} />
+            </div>
             <div className="">
               <h2 className="font-semibold my-10 text-xl">Comments</h2>
               <CommentBox postSlug={post.slug} />

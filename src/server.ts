@@ -19,6 +19,6 @@ nextApp.prepare().then(() => {
 
   app.listen(PORT, (err?: any) => {
     if (err) throw err;
-    console.log(`> Ready on http://localhost:${PORT}`);
+    console.log(`> Ready on ${process.env.NEXT_PUBLIC_SERVER_URL}:${PORT}`);
   });
 });

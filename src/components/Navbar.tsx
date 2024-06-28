@@ -37,15 +37,26 @@ const Navbar = async () => {
         </Link>
       </div>
       <div className="font-bold text-2xl tracking-tighter flex-1 lg:text-center  lg:text-3xl xl:text-4xl ">
-        writesSmart.
+        <Link href="/">writesSmart.</Link>
       </div>
       <div className="flex items-center justify-end gap-3 flex-1 ">
         <ModeToggle />
-        <MobileNav user={session?.user} />
+        <div className="md:hidden">
+          <MobileNav user={session?.user} />
+        </div>
         <div className="md:flex items-center gap-0.5 text-sm hidden">
-          <Link className={buttonVariants({variant: 'ghost'})} href="/">Home</Link>
-          <Link className={buttonVariants({variant: 'ghost'})} href="/about">About</Link>
-          <Link className={buttonVariants({variant: 'ghost'})} href="/contact">Contact</Link>
+          <Link className={buttonVariants({ variant: "ghost" })} href="/">
+            Home
+          </Link>
+          <Link className={buttonVariants({ variant: "ghost" })} href="/about">
+            About
+          </Link>
+          <Link
+            className={buttonVariants({ variant: "ghost" })}
+            href="/contact"
+          >
+            Contact
+          </Link>
           <AuthLinks session={session} />
         </div>
       </div>

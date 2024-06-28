@@ -9,17 +9,16 @@ interface CardProps {
 }
 
 const Card = ({ post }: CardProps) => {
-  console.log("Images: ", post.img);
   return (
     <div className="md:grid md:grid-cols-2 mb-12 gap-x-8">
-      <div className="relative hidden md:block h-60 overflow-hidden rounded-md">
+      {post.img && <div className="relative hidden md:block h-60 overflow-hidden rounded-md">
         <Image
           fill
-          src={`/kids_about_to_ball.jpeg`}
+          src={post.img}
           className="size-full object-cover object-center"
-          alt={``}
+          alt={`${post.slug}-image`}
         />
-      </div>
+      </div>}
       <div className="text-xs flex flex-col gap-2 justify-center">
         <div>
           <span className="text-gray-400">
@@ -30,16 +29,13 @@ const Card = ({ post }: CardProps) => {
           </span>
         </div>
         <h2 className="text-lg font-bold leading-5">
-          Lorem ipsum, dolor sit amet consectetur adipisicing elit.
+          {post.title}
         </h2>
         <p className="">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Tempore sunt
-          expedita deserunt itaque? Quo neque soluta, sapiente inventore
-          repellat reprehenderit nam, aliquam commodi optio, non doloribus
-          facilis libero obcaecati quod?
+          {post.desc}
         </p>
         <Link
-          href={`/post/${post.id}`}
+          href={`/post/${post.slug}`}
           className={cn(
             buttonVariants({ variant: "link" }),
             "px-0 max-w-fit text-xs",

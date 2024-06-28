@@ -33,31 +33,32 @@ export function CommentBox({ postSlug }: CommentBoxProps) {
   );
 
   const comments: (Comment & { user: User })[] = data?.comments;
-  
-  const [commentDesc, setCommentDesc] = useState("")
+
+  const [commentDesc, setCommentDesc] = useState("");
 
   const handleCommentSubmit = async () => {
-    
     try {
       await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/comments`, {
         method: "POST",
-        body: JSON.stringify({commentDesc, postSlug})
-      })
-      mutate()  
-      setCommentDesc("")
+        body: JSON.stringify({ commentDesc, postSlug }),
+      });
+      mutate();
+      setCommentDesc("");
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-  }
+  };
 
   return (
     <div>
       {session ? (
         <div className="grid w-full gap-2">
-          <Textarea placeholder="Type your message here." value={commentDesc} onChange={e => setCommentDesc(e.target.value)} />
-          <Button 
-          onClick={handleCommentSubmit}
-          >Post Comment</Button>
+          <Textarea
+            placeholder="Type your message here."
+            value={commentDesc}
+            onChange={(e) => setCommentDesc(e.target.value)}
+          />
+          <Button onClick={handleCommentSubmit}>Post Comment</Button>
         </div>
       ) : (
         <Link href="/login">
@@ -98,4 +99,3 @@ export function CommentBox({ postSlug }: CommentBoxProps) {
     </div>
   );
 }
-

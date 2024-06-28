@@ -1,8 +1,10 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 
 function useMediaQuery(query: string): boolean {
   // Initialize state to store whether the media query matches
-  const [matches, setMatches] = useState<boolean>(() => window.matchMedia(query).matches);
+  const [matches, setMatches] = useState<boolean>(
+    () => window.matchMedia(query).matches,
+  );
 
   useEffect(() => {
     // Create a MediaQueryList object
@@ -14,15 +16,15 @@ function useMediaQuery(query: string): boolean {
     };
 
     // Add the listener to the MediaQueryList
-    mediaQueryList.addEventListener('change', listener);
+    mediaQueryList.addEventListener("change", listener);
 
     // Clean up the event listener on component unmount
     return () => {
-      mediaQueryList.removeEventListener('change', listener);
+      mediaQueryList.removeEventListener("change", listener);
     };
   }, [query]);
 
   return matches;
 }
 
-export {useMediaQuery};
+export { useMediaQuery };

@@ -13,8 +13,8 @@ const Blogs = ({ searchParams }: BlogProps) => {
   const cat = searchParams.cat || "";
   return (
     <div>
-      <h1 className="text-3xl mt-4 leading-tight tracking-tighter font-bold ">
-        Styles Category
+      <h1 className="text-3xl capitalize mt-4 leading-tight tracking-tighter font-bold ">
+        {cat || "All"} category
       </h1>
       <div className="flex gap-12">
         <CardList page={page} cat={cat} />

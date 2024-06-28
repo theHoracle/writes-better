@@ -18,7 +18,6 @@ export const GET = async (req: NextRequest) => {
       },
       include: { user: true },
     });
-    console.log(comments);
     return NextResponse.json({ comments }, { status: 200 });
   } catch (error) {
     console.log("Post route error: ", error);
@@ -31,35 +30,37 @@ export const GET = async (req: NextRequest) => {
 
 // add new comment to a post
 
-export const POST = auth( async (req) => {
-  const session = req.auth
-  if(!session) {
-    console.log()
-    return NextResponse.json({message: "NOT AUTHENTICATED"}, {status: 401})
+export const POST = auth(async (req) => {
+  const session = req.auth;
+  if (!session) {
+    return NextResponse.json({ message: "NOT AUTHENTICATED" }, { status: 401 });
   }
 
   try {
-    const body = await req.text()
-    const parsedBody = JSON.parse(body)
-
-    // Log the request body to verify its content
-    console.log("Parsed body:", parsedBody, "\n BOdy ->", body);
+    const body = await req.text();
+    const parsedBody = JSON.parse(body);
 
     // Destructure the fields from the request body
     const { commentDesc, postSlug } = parsedBody;
 
     if (!commentDesc || !postSlug) {
-      return NextResponse.json({message: "MISSING REQUIRED FIELDS"}, {status: 400})
+      return NextResponse.json(
+        { message: "MISSING REQUIRED FIELDS" },
+        { status: 400 },
+      );
     }
-      // Create a new comment in the database
-      await prisma.comment.create({
-        data: {
-          desc: commentDesc,
-          postSlug: postSlug,
-          userEmail: session?.user?.email!, // Adding user email from the session
-        },
-      });
-      return NextResponse.json({message: "COMMENT ADDED SUCESSFULLY"}, {status: 200})
+    // Create a new comment in the database
+    await prisma.comment.create({
+      data: {
+        desc: commentDesc,
+        postSlug: postSlug,
+        userEmail: session?.user?.email!, // Adding user email from the session
+      },
+    });
+    return NextResponse.json(
+      { message: "COMMENT ADDED SUCESSFULLY" },
+      { status: 200 },
+    );
   } catch (error) {
     console.log("Post route error: ", error);
 
