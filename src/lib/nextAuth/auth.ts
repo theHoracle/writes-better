@@ -8,5 +8,4 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   adapter: PrismaAdapter(prisma),
   providers: [Google],
   secret: process.env.AUTH_SECRET,
-  trustHost: true
 });

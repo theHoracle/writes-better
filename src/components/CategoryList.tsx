@@ -15,7 +15,7 @@ export const getCategories = async () => {
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_SERVER_URL}/api/categories`,
   );
-  if (!res) throw new Error("Fetch failed");
+  if (!res.ok) throw new Error("Fetch failed");
   return res.json();
 };
 
