@@ -1,13 +1,15 @@
-import Image from "next/image";
-import Link from "next/link";
-
 import { Button, buttonVariants } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { signIn } from "@/lib/nextAuth/auth";
-import { cn } from "@/lib/utils";
+import { auth, signIn } from "@/lib/nextAuth/auth";
 
-const Login = () => {
+import { cn } from "@/lib/utils";
+import { Loader2 } from "lucide-react";
+import { permanentRedirect,  } from "next/navigation";
+
+const Login = async () => {
+  const session = await auth()
+  if(session) {
+    permanentRedirect('/')
+  }
   return (
     <div className="w-full lg:grid lg:min-h-[600px] xl:min-h-[800px]">
       <div className="flex items-center justify-center py-12">
@@ -47,9 +49,9 @@ const LoginWithGoogle = () => {
         await signIn("google");
       }}
     >
-      <button type="submit" className={cn(buttonVariants(), "w-full py-6")}>
+      <Button type="submit" className="w-full py-6 flex items-center relative">
         Sign in with Google
-      </button>
+      </Button>
     </form>
   );
 };

@@ -8,4 +8,15 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   adapter: PrismaAdapter(prisma),
   providers: [Google],
   secret: process.env.AUTH_SECRET,
+  callbacks: {
+    async redirect({baseUrl, url}) {
+      const urlObject = new URL(url, baseUrl)
+      const origin = urlObject.searchParams.get("origin")
+
+      if(origin) {
+        return origin
+      }
+      return "/posts"
+    }
+  }
 });

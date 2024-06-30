@@ -1,5 +1,3 @@
-"use client";
-
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -15,6 +13,7 @@ import {
   DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { signOut } from "@/lib/nextAuth/auth";
 import { User } from "next-auth";
 import Link from "next/link";
 
@@ -68,7 +67,7 @@ const MobileNav = ({ user }: MobileNavProps) => {
               <p>{user.name || user.email}</p>
             </div>
           ) : (
-            <Link href="/login" className="">
+            <Link href="/login" className="w-full">
               Sign in
             </Link>
           )}
@@ -82,7 +81,12 @@ const MobileNav = ({ user }: MobileNavProps) => {
               className="w-full"
               >Write</Link>
             </DropdownMenuItem>
-            <DropdownMenuItem>My Posts</DropdownMenuItem>
+            <DropdownMenuItem>  
+            <Link href='/my-posts'
+              className="w-full"
+              >My Posts</Link>
+            
+              </DropdownMenuItem>
           </DropdownMenuGroup>
         )}
         <DropdownMenuSeparator />
@@ -113,7 +117,17 @@ const MobileNav = ({ user }: MobileNavProps) => {
         <DropdownMenuSeparator />
         <DropdownMenuItem>
           {user ? (
-            "Log out"
+            <form
+            className="w-full"
+            action={async () => {
+              "use server";
+              await signOut();
+            }}
+          >
+            <button type="submit" 
+            className="w-full"
+            >Sign out</button>
+          </form>
           ) : (
             <p className="font-semibold  tracking-tight">writesSmart inc.</p>
           )}
