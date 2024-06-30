@@ -15,10 +15,11 @@ interface TextEditorProps {
   session: Session | null;
 }
 
+const ReactQuill = dynamic(() => import("react-quill"), {
+  ssr: false,
+});
+
 const TextEditor = ({ session }: TextEditorProps) => {
-  const ReactQuill = dynamic(() => import("react-quill"), {
-    ssr: false,
-  });
 
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState("");
